@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+
+	<!-- JNDI datasource -->
+	<!-- 
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+		<property name="jndiName" value="jdbc/oraclePool"/>
+		<property name="resourceRef" value="true" />
+	</bean> 
+	 -->
+	
+	<!-- Hsql datasource -->
+	<!--
+	<jdbc:embedded-database id="dataSource" >
+		<jdbc:script location="classpath:hsql/schema.sql"/>
+		<jdbc:script location="classpath:hsql/data.sql"/>
+	</jdbc:embedded-database>
+	-->
+
+	<!-- JDBC datasource -->
+	<!--
+	-->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/springapp3" />
+		<property name="username" value="postgres" />
+		<property name="password" value="postgres" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.helloworld.model" />
+		<property name="mapperLocations" value="classpath*:dao/**/*.xml" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- scan for mapper interface files and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.helloworld.dao" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+<!-- 	<bean -->
+<!-- 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver"> -->
+<!-- 		<property name="order" value="1" /> -->
+<!-- 		<property name="mediaTypes"> -->
+<!-- 			<map> -->
+<!-- 				<entry key="json" value="application/json" /> -->
+<!-- 			</map> -->
+<!-- 		</property> -->
+
+<!-- 		<property name="defaultViews"> -->
+<!-- 			<list> -->
+<!-- 				JSON View -->
+<!-- 				<bean -->
+<!-- 					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"> -->
+<!-- 				</bean> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 		<property name="ignoreAcceptHeader" value="true" /> -->
+
+<!-- 	</bean> -->
+
+</beans>
