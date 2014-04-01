@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.helloworld.pojo.User;
+import com.helloworld.model.User;
 
 /**
  * Handles requests for the application home page.

@@ -1,4 +1,4 @@
-package com.helloworld.pojo;
+package com.helloworld.model;
 
 public class User {
 	String username = "asasasas";
