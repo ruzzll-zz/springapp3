@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Handles requests for the application home page.
+ * example :D
  */
 @Controller
 public class HomeController {
@@ -21,7 +22,6 @@ public class HomeController {
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
-	 * example :D
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
