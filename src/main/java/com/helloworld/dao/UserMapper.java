@@ -47,9 +47,9 @@ public class UserMapper {
 		
 		// Create a new dummy user
 		user = new DbUser();
-		user.setUsername("john");
-		// Actual password: admin
-		user.setPassword("21232f297a57a5a743894a0e4a801fc3");
+		user.setUsername("admin");
+		// Actual password: 1234
+		user.setPassword("81dc9bdb52d04dc20036dbd8313ed055");
 		// Admin user
 		user.setAccess(1);
 		

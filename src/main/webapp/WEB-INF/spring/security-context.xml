@@ -7,17 +7,17 @@
       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
    http://www.springframework.org/schema/security 
    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
-  
+
  <!-- This is where we configure Spring-Security  -->
  <security:http auto-config="false" use-expressions="true" access-denied-page="/auth/denied"
    entry-point-ref="authenticationEntryPoint">  
-  
+
 <!--   <security:intercept-url pattern="/**" access="permitAll" /> -->
   <security:intercept-url pattern="/auth/login" access="permitAll"/>
-  <security:intercept-url pattern="/admin/**" access="isAuthenticated()"/>
+  <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 <!--   <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/> -->
 <!--   <security:intercept-url pattern="/main/common" access="hasRole('ROLE_USER')"/> -->
-    
+
   <security:logout
     invalidate-session="true"
     logout-success-url="/auth/login"
@@ -28,7 +28,7 @@
   
   <security:session-management session-authentication-strategy-ref="sas"/>
  </security:http>
- 
+
  <!-- store session -->
  <bean id="concurrencyFilter"
       class="org.springframework.security.web.session.ConcurrentSessionFilter">
@@ -42,8 +42,7 @@
     <property name="authenticationManager" ref="customAuthenticationManager" />
   </bean>
 
-  <bean id="sas"
-      class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+  <bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
     <constructor-arg name="sessionRegistry" ref="sessionRegistry" />
     <property name="maximumSessions" value="1" />
   </bean>
@@ -58,24 +57,24 @@
     p:authenticationManager-ref="customAuthenticationManager"
     p:authenticationFailureHandler-ref="customAuthenticationFailureHandler"
     p:authenticationSuccessHandler-ref="customAuthenticationSuccessHandler" />
-     
+
  <!-- Custom authentication manager. In order to authenticate, username and password must not be the same -->
  <bean id="customAuthenticationManager" class="com.helloworld.handlers.CustomAuthenticationManager" />
-   
+
   <!-- We just actually need to set the default failure url here -->
    <bean id="customAuthenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"
    p:defaultFailureUrl="/auth/login?error=true" />
-    
+
    <!-- We just actually need to set the default target url here -->
   <bean id="customAuthenticationSuccessHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"
    p:defaultTargetUrl="/admin/dashboard" />
-   
+
   <!-- The AuthenticationEntryPoint is responsible for redirecting the user to a particular page, like a login page,
     whenever the server sends back a response requiring authentication -->
   <!-- See Spring-Security Reference 5.4.1 for more info -->
   <bean id="authenticationEntryPoint"  class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint"
    p:loginFormUrl="/auth/login"/>
- 
+
  <!-- The tag below has no use but Spring Security needs it to autowire the parent property of 
    org.springframework.security.authentication.ProviderManager. Otherwise we get an error 
    A probable bug. This is still under investigation-->
